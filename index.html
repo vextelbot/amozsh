@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#05080f">
+<title>VEX | راهنمای نصب اپلیکیشن‌های VPN</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --turquoise: #00d4ff;
+    --turquoise-2: #00f5ff;
+    --turquoise-dark: #00a8cc;
+    --turquoise-glow: rgba(0, 212, 255, 0.55);
+    --black-1: #05080f;
+    --black-2: #0a0f1e;
+    --black-3: #101728;
+    --white: #ffffff;
+    --gray-light: #c2cde0;
+    --gray-mid: #6e7c9a;
+    --glass-bg: rgba(10, 15, 30, 0.55);
+    --glass-border: rgba(0, 212, 255, 0.22);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Vazirmatn', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    min-height: 100vh;
+    background: var(--black-1);
+    color: var(--white);
+    padding: 0 16px 40px;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  /* ===== پس‌زمینه ستاره‌ای ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(2px 2px at 20% 30%, rgba(0, 212, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 80% 20%, rgba(0, 212, 255, 0.6), transparent),
+      radial-gradient(2px 2px at 40% 80%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 90% 50%, rgba(0, 212, 255, 0.5), transparent);
+    background-size: 200% 200%;
+    animation: starsMove 40s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes starsMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 200%; }
+  }
+
+  /* ===== هاله‌های نئون ===== */
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(130px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .glow-orb.orb-1 {
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, var(--turquoise) 0%, transparent 70%);
+    top: -220px;
+    right: -180px;
+    opacity: 0.4;
+    animation: float1 14s ease-in-out infinite;
+  }
+
+  .glow-orb.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #0099ff 0%, transparent 70%);
+    bottom: -200px;
+    left: -180px;
+    opacity: 0.32;
+    animation: float2 16s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, -50px) scale(1.1); }
+  }
+
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, 50px) scale(1.15); }
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============ هدر ============ */
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 60%);
+    animation: pulseHalo 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pulseHalo {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  }
+
+  /* ===== لوگو با هاله چرخان ===== */
+  .logo-wrap {
+    position: relative;
+    width: 190px;
+    height: 190px;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .logo-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: conic-gradient(from 0deg, transparent 0%, var(--turquoise) 25%, transparent 50%, var(--turquoise) 75%, transparent 100%) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: spinRing 6s linear infinite;
+  }
+
+  @keyframes spinRing {
+    to { transform: rotate(360deg); }
+  }
+
+  .logo-ring.outer {
+    inset: -15px;
+    animation-duration: 10s;
+    animation-direction: reverse;
+    opacity: 0.6;
+  }
+
+  .logo-ring.inner {
+    inset: 8px;
+    animation-duration: 5s;
+  }
+
+  .logo-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--turquoise-glow) 0%, transparent 65%);
+    filter: blur(25px);
+    animation: pulseGlow 3s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .brand-logo {
+    width: 140px;
+    height: 140px;
+    border-radius: 32px;
+    object-fit: cover;
+    border: 3px solid var(--turquoise);
+    box-shadow: 
+      0 0 40px var(--turquoise-glow),
+      0 0 80px rgba(0, 212, 255, 0.35),
+      inset 0 0 25px rgba(0, 212, 255, 0.15);
+    background: var(--black-2);
+    position: relative;
+    z-index: 1;
+    animation: logoFloat 4s ease-in-out infinite;
+    transition: transform 0.4s ease;
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ============================================
+     ✨ متن حبابی VEX (Bubble Text)
+     ============================================ */
+  .bubble-vex-wrap {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    margin: 15px 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: transform, opacity;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+  }
+
+  .bubble-vex {
+    font-family: 'Vazirmatn', sans-serif;
+    font-weight: 900;
+    font-size: clamp(70px, 14vw, 160px);
+    letter-spacing: 12px;
+    line-height: 1;
+    direction: ltr;
+    position: relative;
+    display: inline-flex;
+    gap: 4px;
+    transform-style: preserve-3d;
+    animation: vexHover 4s ease-in-out infinite;
+  }
+
+  @keyframes vexHover {
+    0%, 100% { transform: translateY(0) rotateX(0deg); }
+    50% { transform: translateY(-8px) rotateX(4deg); }
+  }
+
+  /* هر حرف به صورت حبابی */
+  .bubble-vex span {
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #e6fbff 15%,
+      #7ee8ff 40%,
+      #00d4ff 60%,
+      #0099cc 85%,
+      #006688 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: 
+      drop-shadow(0 0 20px rgba(0, 212, 255, 0.8))
+      drop-shadow(0 6px 0 rgba(0, 100, 140, 0.4))
+      drop-shadow(0 12px 20px rgba(0, 0, 0, 0.5));
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.35);
+    text-stroke: 2px rgba(255, 255, 255, 0.35);
+    animation: letterBounce 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+  }
+
+  .bubble-vex span:nth-child(1) { animation-delay: 0s; }
+  .bubble-vex span:nth-child(2) { animation-delay: 0.15s; }
+  .bubble-vex span:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes letterBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+  }
+
+  /* درخشش بالای هر حرف (افکت حباب) */
+  .bubble-vex span::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 22%;
+    width: 32%;
+    height: 22%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 80%);
+    border-radius: 50%;
+    filter: blur(2px);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* درخشش کوچک‌تر پایین */
+  .bubble-vex span::after {
+    content: '';
+    position: absolute;
+    bottom: 12%;
+    right: 25%;
+    width: 14%;
+    height: 10%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(1.5px);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* هاله زیر متن */
+  .bubble-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 80%;
+    background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.5) 0%, transparent 65%);
+    filter: blur(40px);
+    z-index: -1;
+    animation: bubbleGlowPulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes bubbleGlowPulse {
+    0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+  }
+
+  /* متن شعار */
+  .brand-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(13px, 2vw, 16px);
+    color: var(--turquoise);
+    font-weight: 500;
+    letter-spacing: 3px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.9s ease 0.3s both;
+    text-shadow: 0 0 20px var(--turquoise-glow);
+  }
+
+  .brand-tagline::before,
+  .brand-tagline::after {
+    content: '';
+    width: 45px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--turquoise));
+  }
+
+  .brand-tagline::after {
+    background: linear-gradient(90deg, var(--turquoise), transparent);
+  }
+
+  /* عنوان اصلی */
+  header h1 {
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 18px;
+    line-height: 1.35;
+    animation: fadeUp 0.9s ease 0.4s both;
+  }
+
+  header h1 .accent {
+    color: var(--turquoise);
+    text-shadow: 
+      0 0 25px var(--turquoise-glow),
+      0 0 50px rgba(0, 212, 255, 0.3);
+    position: relative;
+    display: inline-block;
+  }
+
+  header h1 .accent::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--turquoise), transparent);
+    border-radius: 3px;
+    box-shadow: 0 0 15px var(--turquoise-glow);
+  }
+
+  header p {
+    font-size: clamp(14px, 1.9vw, 17px);
+    color: var(--gray-light);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.95;
+    padding: 0 8px;
+    animation: fadeUp 0.9s ease 0.5s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* آمار */
+  .stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    animation: fadeUp 0.9s ease 0.6s both;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(0, 212, 255, 0.06);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 212, 255, 0.18);
+    border-radius: 50px;
+    font-size: 12.5px;
+    color: var(--gray-light);
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--turquoise);
+    box-shadow: 0 8px 25px -8px var(--turquoise-glow);
+    color: var(--white);
+  }
+
+  .stat-item .emoji {
+    font-size: 16px;
+    display: inline-block;
+    animation: emojiWiggle 3s ease-in-out infinite;
+  }
+
+  .stat-item:nth-child(2) .emoji { animation-delay: 0.5s; }
+  .stat-item:nth-child(3) .emoji { animation-delay: 1s; }
+
+  @keyframes emojiWiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-12deg) scale(1.15); }
+    75% { transform: rotate(12deg) scale(1.15); }
+  }
+
+  /* ============ تب‌ها ============ */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+    padding: 8px;
+    background: rgba(10, 15, 30, 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 
+      0 15px 50px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 0 40px rgba(0, 212, 255, 0.08);
+    animation: fadeUp 0.9s ease 0.7s both;
+  }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 130px;
+    padding: 15px 20px;
+    background: transparent;
+    border: none;
+    color: var(--gray-light);
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tab-btn .icon {
+    font-size: 18px;
+    transition: transform 0.4s ease;
+  }
+
+  .tab-btn:hover .icon {
+    transform: scale(1.25) rotate(-8deg);
+  }
+
+  .tab-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--turquoise), #0099ff);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 14px;
+  }
+
+  .tab-btn > * { position: relative; z-index: 1; }
+
+  .tab-btn:hover {
+    color: var(--white);
+    background: rgba(0, 212, 255, 0.08);
+  }
+
+  .tab-btn.active {
+    color: var(--black-1);
+    font-weight: 800;
+    box-shadow: 
+      0 10px 30px -5px var(--turquoise-glow),
+      0 0 25px rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .tab-btn.active::before { opacity: 1; }
+  .tab-btn.active .icon { transform: scale(1.2); }
+
+  /* ============ پنل‌ها ============ */
+  .panel {
+    display: none;
+    animation: panelIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .panel.active { display: block; }
+
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(25px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ============ کارت فول‌گلس ============ */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 38px;
+    box-shadow: 
+      0 30px 80px rgba(0, 0, 0, 0.55),
+      0 0 60px rgba(0, 212, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--turquoise), transparent);
+    opacity: 0.7;
+  }
+
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 30px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    background: linear-gradient(135deg, var(--turquoise) 0%, #0099ff 100%);
+    box-shadow: 
+      0 12px 35px -8px var(--turquoise-glow),
+      0 0 40px rgba(0, 212, 255, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    flex-shrink: 0;
+    color: var(--black-1);
+    animation: iconPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .card-title h2 {
+    font-size: clamp(18px, 2.6vw, 24px);
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--white);
+  }
+
+  .card-title p {
+    font-size: 13px;
+    color: var(--gray-mid);
+    line-height: 1.6;
+  }
+
+  /* پلتفرم‌ها */
+  .platforms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .platform {
+    background: rgba(10, 15, 30, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.13);
+    border-radius: 20px;
+    padding: 22px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .platform::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1));
+    transition: width 0.6s ease;
+  }
+
+  .platform:hover {
+    transform: translateY(-6px);
+    background: rgba(10, 15, 30, 0.8);
+    border-color: rgba(0, 212, 255, 0.45);
+    box-shadow: 
+      0 25px 55px -18px rgba(0, 212, 255, 0.4),
+      0 0 40px rgba(0, 212, 255, 0.12);
+  }
+
+  .platform:hover::before { width: 100%; }
+
+  .platform-head {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .platform-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.22);
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+  }
+
+  .platform:hover .platform-icon {
+    background: rgba(0, 212, 255, 0.18);
+    border-color: rgba(0, 212, 255, 0.5);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.35);
+    transform: scale(1.05) rotate(-5deg);
+  }
+
+  .platform-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .platform-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .platform-sub {
+    font-size: 11px;
+    color: var(--gray-mid);
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+  }
+
+  /* دکمه دانلود */
+  .download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--turquoise) 0%, #0099ff 100%);
+    color: var(--black-1);
+    text-decoration: none;
+    border-radius: 13px;
+    font-size: 13.5px;
+    font-weight: 700;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 10px 25px -8px var(--turquoise-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .download-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transition: left 0.7s ease;
+  }
+
+  .download-btn:hover::before { left: 100%; }
+
+  .download-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+      0 18px 40px -8px var(--turquoise-glow),
+      0 0 35px rgba(0, 212, 255, 0.45);
+  }
+
+  .download-btn:active { transform: translateY(0) scale(0.99); }
+
+  .download-btn .arrow {
+    font-size: 17px;
+    font-weight: 900;
+    transition: transform 0.4s ease;
+  }
+
+  .download-btn:hover .arrow { transform: translateX(-8px); }
+
+  /* هشدارها */
+  .alert {
+    display: flex;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    font-size: 13.5px;
+    line-height: 1.9;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .alert:hover { transform: translateX(-4px); }
+
+  .alert.danger {
+    background: rgba(255, 71, 87, 0.09);
+    border: 1px solid rgba(255, 71, 87, 0.35);
+    color: #ff9aa4;
+    box-shadow: 0 0 30px rgba(255, 71, 87, 0.1);
+  }
+
+  .alert.info {
+    background: rgba(0, 212, 255, 0.09);
+    border: 1px solid rgba(0, 212, 255, 0.35);
+    color: #7ee0ff;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.12);
+  }
+
+  .alert-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    line-height: 1.2;
+    animation: emojiWiggle 2.5s ease-in-out infinite;
+  }
+
+  .alert strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* باکس رمز */
+  .password-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px dashed rgba(0, 212, 255, 0.45);
+    border-radius: 13px;
+    margin-top: 15px;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .password-box:hover {
+    border-color: var(--turquoise);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+  }
+
+  .password-box code {
+    font-family: 'Courier New', monospace;
+    font-size: 17px;
+    color: var(--turquoise);
+    letter-spacing: 4px;
+    font-weight: 700;
+    text-shadow: 0 0 15px var(--turquoise-glow);
+    direction: ltr;
+  }
+
+  .password-box .label {
+    font-size: 13px;
+    color: var(--gray-light);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* مراحل */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 16px 18px;
+    background: rgba(0, 212, 255, 0.045);
+    border-radius: 14px;
+    border-right: 3px solid var(--turquoise);
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step:hover {
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateX(-6px);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.18);
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--turquoise) 0%, #0099ff 100%);
+    color: var(--black-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 0 18px var(--turquoise-glow);
+    transition: transform 0.35s ease;
+  }
+
+  .step:hover .step-num { transform: scale(1.15) rotate(-8deg); }
+
+  .step-text {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #d8e4f5;
+    padding-top: 4px;
+  }
+
+  /* فوتر */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    padding: 35px 20px 15px;
+    color: var(--gray-mid);
+    font-size: 13.5px;
+    position: relative;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--turquoise), transparent);
+    box-shadow: 0 0 20px var(--turquoise-glow);
+  }
+
+  .brand-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: var(--turquoise);
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-size: 16px;
+  }
+
+  .brand-mini img {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .brand-mini:hover img { transform: rotate(-8deg) scale(1.1); }
+
+  footer .heart {
+    color: var(--turquoise);
+    animation: heartbeat 1.6s ease infinite;
+    display: inline-block;
+    text-shadow: 0 0 15px var(--turquoise-glow);
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  /* ============ ریسپانسیو ============ */
+  @media (max-width: 768px) {
+    body { padding: 0 12px 30px; }
+
+    header { padding: 35px 12px 30px; }
+
+    .logo-wrap { width: 150px; height: 150px; margin-bottom: 20px; }
+    .brand-logo { width: 110px; height: 110px; border-radius: 26px; }
+    .logo-ring.outer { inset: -12px; }
+
+    .glass-card { padding: 26px 18px; border-radius: 22px; }
+    .card-icon { width: 58px; height: 58px; font-size: 28px; border-radius: 17px; }
+
+    .tabs { padding: 6px; gap: 5px; border-radius: 16px; }
+    .tab-btn {
+      font-size: 12.5px;
+      padding: 12px 8px;
+      min-width: 100px;
+      border-radius: 12px;
+    }
+    .tab-btn .icon { font-size: 15px; }
+
+    .platform { padding: 18px; border-radius: 16px; }
+    .platform-icon { width: 44px; height: 44px; }
+    .platform-icon svg { width: 22px; height: 22px; }
+
+    .download-btn { padding: 13px 16px; font-size: 13px; }
+
+    .alert { font-size: 12.5px; padding: 15px; }
+
+    .step { padding: 14px; }
+    .step-text { font-size: 13px; }
+
+    .stat-item { font-size: 11.5px; padding: 8px 14px; }
+
+    .bubble-vex { letter-spacing: 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .logo-wrap { width: 130px; height: 130px; }
+    .brand-logo { width: 95px; height: 95px; border-radius: 22px; }
+
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn { min-width: 110px; flex-shrink: 0; }
+
+    .platforms { grid-template-columns: 1fr; gap: 14px; }
+    .glass-card { padding: 22px 14px; }
+
+    .password-box { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+    .brand-tagline::before,
+    .brand-tagline::after { width: 25px; }
+
+    .stat-item { font-size: 11px; padding: 7px 12px; }
+
+    .bubble-vex { letter-spacing: 5px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- هاله‌های نئون -->
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
+
+<div class="container">
+
+  <!-- ============ هدر ============ -->
+  <header>
+
+    <!-- لوگو -->
+    <div class="logo-wrap">
+      <div class="logo-glow"></div>
+      <div class="logo-ring outer"></div>
+      <div class="logo-ring inner"></div>
+      <img src="https://cdn.imgurl.ir/uploads/j0904_msg45237068-49764.jpg" alt="VEX Logo" class="brand-logo">
+    </div>
+
+    <!-- ✨ متن حبابی VEX با موشن اسکرول -->
+    <div class="bubble-vex-wrap" id="bubbleWrap">
+      <div class="bubble-vex">
+        <span>V</span><span>E</span><span>X</span>
+        <div class="bubble-glow"></div>
+      </div>
+    </div>
+
+    <!-- شعار -->
+    <div class="brand-tagline">اتصال امن، سرعت بی‌نهایت</div>
+
+    <!-- عنوان اصلی -->
+    <h1>راهنمای نصب <span class="accent">اپلیکیشن‌های VPN</span></h1>
+    <p>آموزش گام‌به‌گام نصب و کانفیگ اپلیکیشن‌های WireGuard، Happ و OpenVPN برای اندروید، آیفون و ویندوز — سریع، ساده و حرفه‌ای</p>
+
+    <!-- آمار -->
+    <div class="stats">
+      <div class="stat-item"><span class="emoji">🚀</span> نصب آسان</div>
+      <div class="stat-item"><span class="emoji">🛡️</span> اتصال امن</div>
+      <div class="stat-item"><span class="emoji">⚡</span> سرعت بالا</div>
+    </div>
+  </header>
+
+  <!-- ============ تب‌ها ============ -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="wireguard">
+      <span class="icon">🛡️</span> <span>WireGuard</span>
+    </button>
+    <button class="tab-btn" data-tab="happ">
+      <span class="icon">⚡</span> <span>Happ</span>
+    </button>
+    <button class="tab-btn" data-tab="openvpn">
+      <span class="icon">🔒</span> <span>OpenVPN</span>
+    </button>
+  </div>
+
+  <!-- ============ پنل WireGuard ============ -->
+  <div class="panel active" id="wireguard">
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">
+          <h2>اپلیکیشن WireGuard</h2>
+          <p>سرعت بالا و تنظیمات ساده — مناسب برای کارهای سنگین</p>
+        </div>
+      </div>
+
+      <div class="platforms">
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#3ddc84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">اندروید <span>📱</span></div>
+              <div class="platform-sub">Google Play</div>
+            </div>
+          </div>
+          <a href="https://play.google.com/store/apps/details?id=com.wireguard.android&hl=en" target="_blank" class="download-btn">
+            <span>⬇️ دانلود از گوگل پلی</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">آیفون <span>🍎</span></div>
+              <div class="platform-sub">App Store</div>
+            </div>
+          </div>
+          <a href="https://apps.apple.com/us/app/wireguard/id1441195209" target="_blank" class="download-btn">
+            <span>⬇️ دانلود از اپ استور</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">ویندوز <span>💻</span></div>
+              <div class="platform-sub">Windows Client</div>
+            </div>
+          </div>
+          <a href="https://download.wireguard.com/windows-client/wireguard-installer.exe" target="_blank" class="download-btn">
+            <span>⬇️ دانلود نسخه ویندوز</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">۱</div>
+          <div class="step-text">🎯 ابتدا اپلیکیشن WireGuard را از لینک‌های بالا نصب کنید.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">۲</div>
+          <div class="step-text">🎬 سپس مراحل ویدیو آموزشی را به دقت انجام دهید.</div>
+        </div>
+      </div>
+
+      <div class="alert danger">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>مهم:</strong> حتماً کانفیگ‌های قبلی داخل برنامه و فولدر دانلود را حذف کنید تا به ارور «اسم تکراری» نخورید.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ پنل Happ ============ -->
+  <div class="panel" id="happ">
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">
+          <h2>اپلیکیشن Happ (وی‌توره)</h2>
+          <p>پشتیبانی از VMess، VLESS، Trojan و Shadowsocks</p>
+        </div>
+      </div>
+
+      <div class="platforms">
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#3ddc84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">اندروید <span>📱</span></div>
+              <div class="platform-sub">Google Play</div>
+            </div>
+          </div>
+          <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" class="download-btn">
+            <span>⬇️ دانلود از گوگل پلی</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">آیفون <span>🍎</span></div>
+              <div class="platform-sub">App Store</div>
+            </div>
+          </div>
+          <a href="https://apps.apple.com/us/app/happ-proxy-utility/id6504287215" target="_blank" class="download-btn">
+            <span>⬇️ دانلود از اپ استور</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">ویندوز <span>💻</span></div>
+              <div class="platform-sub">GitHub Release</div>
+            </div>
+          </div>
+          <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank" class="download-btn">
+            <span>⬇️ دانلود نسخه ویندوز</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">۱</div>
+          <div class="step-text">📥 برنامه Happ را از لینک‌های بالا نصب کنید.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">۲</div>
+          <div class="step-text">🔗 سپس لینک اشتراک را کپی کنید.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">۳</div>
+          <div class="step-text">🎬 مراحل ویدیو آموزشی را انجام دهید.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ پنل OpenVPN ============ -->
+  <div class="panel" id="openvpn">
+    <div class="glass-card">
+      <div class="card-header">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">
+          <h2>اپلیکیشن OpenVPN</h2>
+          <p>نیاز به فایل کانفیگ (.ovpn) از سرویس‌دهنده</p>
+        </div>
+      </div>
+
+      <div class="platforms">
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#3ddc84"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4483-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993.0001.5511-.4482.9997-.9993.9997zm-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4483.9993.9993 0 .5511-.4482.9997-.9993.9997zm11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">اندروید <span>📱</span></div>
+              <div class="platform-sub">لینک تلگرام</div>
+            </div>
+          </div>
+          <a href="https://t.me/vex_telbot/53" target="_blank" class="download-btn">
+            <span>📲 دریافت از تلگرام</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#ffffff"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">آیفون <span>🍎</span></div>
+              <div class="platform-sub">لینک تلگرام</div>
+            </div>
+          </div>
+          <a href="https://t.me/vex_telbot/52" target="_blank" class="download-btn">
+            <span>📲 دریافت از تلگرام</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+
+        <div class="platform">
+          <div class="platform-head">
+            <div class="platform-icon">
+              <svg viewBox="0 0 24 24" fill="#00a4ef"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            </div>
+            <div>
+              <div class="platform-name">ویندوز <span>💻</span></div>
+              <div class="platform-sub">لینک تلگرام</div>
+            </div>
+          </div>
+          <a href="https://t.me/vex_telbot/55" target="_blank" class="download-btn">
+            <span>📲 دریافت از تلگرام</span>
+            <span class="arrow">←</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="platform" style="margin-top: 18px;">
+        <div class="platform-head">
+          <div class="platform-icon">📄</div>
+          <div>
+            <div class="platform-name">فایل کانفیگ OpenVPN</div>
+            <div class="platform-sub">فایل .ovpn مورد نیاز</div>
+          </div>
+        </div>
+        <a href="https://t.me/vex_telbot/54" target="_blank" class="download-btn">
+          <span>📥 دریافت فایل کانفیگ</span>
+          <span class="arrow">←</span>
+        </a>
+
+        <div class="password-box">
+          <span class="label">🔑 رمز فایل:</span>
+          <code>vex</code>
+        </div>
+      </div>
+
+      <div class="alert info">
+        <span class="alert-icon">💡</span>
+        <div>
+          <strong>توجه:</strong> اپلیکیشن OpenVPN خودش سرویس VPN نمی‌دهد؛ حتماً باید فایل کانفیگ سرور داشته باشید.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ فوتر ============ -->
+  <footer>
+    <div class="brand-mini">
+      <img src="https://cdn.imgurl.ir/uploads/j0904_msg45237068-49764.jpg" alt="VEX">
+      VEX
+    </div>
+    <div>ساخته شده با <span class="heart">❤️</span> برای آموزش راحت‌تر</div>
+  </footer>
+
+</div>
+
+<script>
+  // ===== تب‌بندی =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(target).classList.add('active');
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ===== موشن اسکرول روی متن حبابی VEX =====
+  const bubbleWrap = document.getElementById('bubbleWrap');
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  function updateBubbleMotion() {
+    const scrollY = window.scrollY;
+    const maxScroll = 500;
+    const progress = Math.min(scrollY / maxScroll, 1);
+
+    // مقیاس: از 1 تا 0.55
+    const scale = 1 - progress * 0.45;
+    // چرخش ملایم
+    const rotate = progress * 8;
+    // شفافیت: از 1 تا 0.3
+    const opacity = 1 - progress * 0.7;
+    // جابه‌جایی عمودی ملایم
+    const translateY = progress * 20;
+
+    bubbleWrap.style.transform = `scale(${scale}) rotateX(${rotate}deg) translateY(${translateY}px)`;
+    bubbleWrap.style.opacity = opacity;
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(updateBubbleMotion);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ===== پارالاکس ماوس روی لوگو (دسکتاپ) =====
+  if (window.innerWidth > 768) {
+    const logo = document.querySelector('.brand-logo');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 15;
+      const y = (e.clientY / window.innerHeight - 0.5) * 15;
+      logo.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  }
+</script>
+
+</body>
+</html>
